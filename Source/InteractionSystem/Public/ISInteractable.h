@@ -1,18 +1,17 @@
-﻿// 
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameplayTagAssetInterface.h"
-#include "GameplayTagContainer.h"
+#include "GameplayTags/Classes/GameplayTagAssetInterface.h"
 #include "GameFramework/Actor.h"
-//#include "TargetSystem/Public/TargetSystemTargetableInterface.h"
-#include "MInteractable.generated.h"
+#include "ISInteractable.generated.h"
 
-class IISCharacterInteractionInterface;
-
+struct FGameplayTag;
+struct FGameplayTagContainer;
+class IISCharacterInteraction;
 UCLASS()
-class ALSV2_API AMInteractable : public AActor, /*public ITargetSystemTargetableInterface,*/ public IGameplayTagAssetInterface
+class INTERACTIONSYSTEM_API AISInteractable : public AActor, public IGameplayTagAssetInterface
 {
 	GENERATED_BODY()
 
@@ -22,51 +21,51 @@ public:
 	virtual void GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const override;
 	
 	// Sets default values for this actor's properties
-	AMInteractable();
+	AISInteractable();
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void GetInHands( IISCharacterInteractionInterface* pCharacter );
+	//UFUNCTION(BlueprintNativeEvent)
+	void GetInHands( IISCharacterInteraction*pCharacter );
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	bool TryDrop( IISCharacterInteractionInterface* pCharacter );
+	//UFUNCTION(BlueprintNativeEvent)
+	bool TryDrop( IISCharacterInteraction* pCharacter );
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	//UFUNCTION(BlueprintNativeEvent)
 	void Interact(AActor* pInstigator);
 	
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	//UFUNCTION(BlueprintNativeEvent)
 	bool TryStopInteract(AActor* pInstigator);
 	
 	
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION()
 	void SetActive(bool bIsActive);
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	UFUNCTION(BlueprintNativeEvent)
 	void Break(AActor* pInstigator);
 	
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION()
 	bool IsActiveInGame() const { return bIsActiveInGame; }
 
 	
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION()
 	bool IsGrabbed() const;
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION()
 	bool IsBroken() const;
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION()
 	bool IsInInteraction() const;
 
 	//TODO: make some static predetermined place with tags and get it from there instead requesting of it every time
 	
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION()
 	void SetIsTargetable(bool _bIsTargetable);
 	//virtual bool IsTargetable_Implementation() const override;
 
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	//UFUNCTION(BlueprintNativeEvent)
 	UMeshComponent* GetMeshComponent() const;
 
 	UFUNCTION()
-	virtual FGameplayTag TryUpdateInteraction(IISCharacterInteractionInterface* pInstigatorCharacter);
+	virtual FGameplayTag TryUpdateInteraction(const TScriptInterface<IISCharacterInteraction>& pInstigatorCharacter);
 
 protected:
 	void AddInteractableTag(const FGameplayTag& _Tag);

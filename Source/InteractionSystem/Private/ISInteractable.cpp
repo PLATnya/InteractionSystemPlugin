@@ -1,24 +1,23 @@
-﻿// 
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "MInteractable.h"
+#include "ISInteractable.h"
 
-#include "ISCharacterInteractionInterface.h"
+#include "ISCharacterInteraction.h"
 
-
-void AMInteractable::GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const
+void AISInteractable::GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const
 {
 	TagContainer.AppendTags(InteractableTags);
 }
 
 // Sets default values
-AMInteractable::AMInteractable()
+AISInteractable::AISInteractable()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 }
 
-bool AMInteractable::TryDrop_Implementation(IISCharacterInteractionInterface* pCharacter)
+bool AISInteractable::TryDrop(IISCharacterInteraction*pCharacter)
 {
 	if(!IsGrabbed())
 	{
@@ -29,17 +28,17 @@ bool AMInteractable::TryDrop_Implementation(IISCharacterInteractionInterface* pC
 	return true;
 }
 
-void AMInteractable::GetInHands_Implementation(IISCharacterInteractionInterface* pCharacter)
+void AISInteractable::GetInHands(IISCharacterInteraction*pCharacter)
 {
 	AddInteractableTag(FGameplayTag::RequestGameplayTag(FName(TEXT("Interactable.Grabbed"))));
 }
 
-void AMInteractable::Interact_Implementation(AActor* pInstigator)
+void AISInteractable::Interact(AActor* pInstigator)
 {
 	AddInteractableTag(FGameplayTag::RequestGameplayTag(FName(TEXT("Interactable.InAction"))));
 }
 
-bool AMInteractable::TryStopInteract_Implementation(AActor* pInstigator)
+bool AISInteractable::TryStopInteract(AActor* pInstigator)
 {
 	if(!IsInInteraction())
 	{
@@ -50,7 +49,7 @@ bool AMInteractable::TryStopInteract_Implementation(AActor* pInstigator)
 	return true;
 }
 
-void AMInteractable::SetActive(bool bIsActive)
+void AISInteractable::SetActive(bool bIsActive)
 {
 	SetActorEnableCollision(bIsActive);
 	SetActorHiddenInGame(!bIsActive);
@@ -59,9 +58,9 @@ void AMInteractable::SetActive(bool bIsActive)
 	bIsActiveInGame = bIsActive;
 }
 
-void AMInteractable::Break_Implementation(AActor* pInstigator)
+void AISInteractable::Break_Implementation(AActor* pInstigator)
 {
-	auto* pCharacterInstigator = Cast<IISCharacterInteractionInterface>(pInstigator);
+	auto* pCharacterInstigator = Cast<IISCharacterInteraction>(pInstigator);
 	if(pCharacterInstigator)
 	{
 		TryDrop(pCharacterInstigator);	
@@ -71,48 +70,48 @@ void AMInteractable::Break_Implementation(AActor* pInstigator)
 	AddInteractableTag(FGameplayTag::RequestGameplayTag(FName(TEXT("Interactable.Broken"))));
 }
 
-bool AMInteractable::IsGrabbed() const
+bool AISInteractable::IsGrabbed() const
 {
 	return HasMatchingGameplayTag(FGameplayTag::RequestGameplayTag(FName(TEXT("Interactable.Grabbed"))));;
 }
 
-bool AMInteractable::IsBroken() const
+bool AISInteractable::IsBroken() const
 {
 	return HasMatchingGameplayTag(FGameplayTag::RequestGameplayTag(FName(TEXT("Interactable.Broken"))));
 }
 
-bool AMInteractable::IsInInteraction() const
+bool AISInteractable::IsInInteraction() const
 {
 	return HasMatchingGameplayTag(FGameplayTag::RequestGameplayTag(FName(TEXT("Interactable.InAction"))));
 }
 
-void AMInteractable::SetIsTargetable(bool _bIsTargetable)
+void AISInteractable::SetIsTargetable(bool _bIsTargetable)
 {
 	bIsTargetable = _bIsTargetable;
 }
 
-/*bool AMInteractable::IsTargetable_Implementation() const
+/*bool AISInteractable::IsTargetable_Implementation() const
 {
 	return bIsTargetable && !IsGrabbed();
 }*/
 
-UMeshComponent* AMInteractable::GetMeshComponent_Implementation() const
+UMeshComponent* AISInteractable::GetMeshComponent() const
 {
 	return nullptr;
 }
 
-FGameplayTag AMInteractable::TryUpdateInteraction( IISCharacterInteractionInterface* pInstigatorCharacter )
+FGameplayTag AISInteractable::TryUpdateInteraction( const TScriptInterface<IISCharacterInteraction>& pInstigatorCharacter )
 {
 	return FGameplayTag::EmptyTag;
 }
 
-void AMInteractable::AddInteractableTag(const FGameplayTag& _Tag)
+void AISInteractable::AddInteractableTag(const FGameplayTag& _Tag)
 {
 	
 	InteractableTags.AddTag(_Tag);
 }
 
-void AMInteractable::RemoveInteractableTag(const FGameplayTag& _Tag)
+void AISInteractable::RemoveInteractableTag(const FGameplayTag& _Tag)
 {
 	InteractableTags.RemoveTag(_Tag);
 }
