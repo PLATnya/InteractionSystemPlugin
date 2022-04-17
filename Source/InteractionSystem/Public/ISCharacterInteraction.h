@@ -34,11 +34,11 @@ public:
 	
 	//TODO: refresh
 
-	FVector GetGrabbingLocation() const;
+	virtual FVector GetGrabbingLocation() const = 0;
 	
 	//TODO: refresh
 
-	FRotator GetGrabbingRotation() const;
+	virtual FRotator GetGrabbingRotation() const = 0;
 	
 	
 	virtual void AddActiveItem(class AISInteractable* pItem) = 0;
