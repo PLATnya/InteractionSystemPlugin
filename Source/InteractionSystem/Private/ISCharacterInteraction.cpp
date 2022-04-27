@@ -41,20 +41,6 @@ void IISCharacterInteraction::UpdateInteraction(float _DeltaTime)
 	UpdateConstraints(_DeltaTime);
 }
 
-/*
-void IISCharacterInteraction::AddActiveItem(AISInteractable* pItem)
-{
-	ActiveItems.Add(pItem);
-}
-
-void IISCharacterInteraction::RemoveActiveItem(AISInteractable* pItem)
-{
-	if(ActiveItems.Contains(pItem))
-	{
-		ActiveItems.Remove(pItem);
-	}
-}*/
-
 
 
 void IISCharacterInteraction::UpdateHandle(float _DeltaTime)

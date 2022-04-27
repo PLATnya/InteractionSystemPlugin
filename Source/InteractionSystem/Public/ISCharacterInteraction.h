@@ -23,10 +23,7 @@ class UISCharacterInteraction : public UInterface
 class INTERACTIONSYSTEM_API IISCharacterInteraction
 {
 	GENERATED_BODY()
-	
-	TArray<AISInteractable*> ActiveItems;
-	//TArray<AISInteractable*> ActiveItems;
-	
+
 public:
 	void BeginInteraction();
 	
@@ -45,13 +42,6 @@ public:
 	//TODO: refresh
 	
 	virtual void RemoveActiveItem(class AISInteractable* pItem) = 0;
-	
-	/*//UFUNCTION(BlueprintCallable, BlueprintPure)
-	const TArray<AISInteractable*>& GetActiveItems() const { return ActiveItems; }
-	
-	//UFUNCTION(BlueprintCallable, BlueprintPure)
-	const TArray<AISInteractable*> GetActiveItemsCopy() const { return ActiveItems; }*/
-
 	
 	virtual UPhysicsConstraintComponent* GetPhysicsConstraintComponent() const = 0;
 	virtual UPhysicsHandleComponent* GetPhysicsHandleComponent() const = 0;
