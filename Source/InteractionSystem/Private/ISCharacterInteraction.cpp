@@ -11,18 +11,9 @@
 
 void IISCharacterInteraction::BeginInteraction()
 {
-	/*UPhysicsConstraintComponent* pPhysicsConstraintComponent = GetPhysicsConstraintComponent();
-	if(!ensure(IsValid(pPhysicsConstraintComponent))){ return; }
-	
-	pPhysicsConstraintComponent->OnConstraintBroken.AddDynamic(this, &IISCharacterInteraction::OnPhysicsConstraintBroken);*/
-	
+	//
 }
 
-
-void IISCharacterInteraction::OnPhysicsConstraintBroken(int32 _ConstraintIndex)
-{
-	//TODO: something on broen
-}
 
 const TScriptInterface<IISCharacterInteraction>& IISCharacterInteraction::GetScriptInterface()
 {
@@ -67,9 +58,7 @@ void IISCharacterInteraction::UpdateHandle(float _DeltaTime)
 	const FGameplayTag UpdateResult = pGrabbedActor->TryUpdateInteraction(GetScriptInterface());
 	if(UpdateResult == FGameplayTag::RequestGameplayTag(FName(TEXT("Interactable.Stop.Drop"))))
 	{
-		//TODO: WTF
 		pHandleComp->ReleaseComponent();
-		//CancelGrabbingAbility();
 	}
 }
 
@@ -91,13 +80,10 @@ void IISCharacterInteraction::UpdateConstraints(float _DeltaTime)
 	}
 
 	
-
 	const FGameplayTag UpdateResult = pGrabbedActor->TryUpdateInteraction(GetScriptInterface());
 	if(UpdateResult == FGameplayTag::RequestGameplayTag(FName(TEXT("Interactable.Stop.Drop"))))
 	{
-		///pHandleComp->
-		//TODO: WTF
-		//CancelGrabbingAbility();
+		pPhysicsConstraintComp->BreakConstraint();
 	}
 }
 
