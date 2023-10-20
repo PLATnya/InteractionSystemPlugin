@@ -29,7 +29,7 @@ public:
 	//UFUNCTION(BlueprintNativeEvent)
 	bool TryDrop( IISCharacterInteraction* pCharacter );
 
-	//UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void Interact(AActor* pInstigator);
 	
 	//UFUNCTION(BlueprintNativeEvent)

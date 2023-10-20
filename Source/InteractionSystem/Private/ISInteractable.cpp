@@ -28,15 +28,16 @@ bool AISInteractable::TryDrop(IISCharacterInteraction*pCharacter)
 	return true;
 }
 
+void AISInteractable::Interact_Implementation(AActor* pInstigator)
+{
+	AddInteractableTag(FGameplayTag::RequestGameplayTag(FName(TEXT("Interactable.InAction"))));
+}
+
 void AISInteractable::GetInHands(IISCharacterInteraction*pCharacter)
 {
 	AddInteractableTag(FGameplayTag::RequestGameplayTag(FName(TEXT("Interactable.Grabbed"))));
 }
 
-void AISInteractable::Interact(AActor* pInstigator)
-{
-	AddInteractableTag(FGameplayTag::RequestGameplayTag(FName(TEXT("Interactable.InAction"))));
-}
 
 bool AISInteractable::TryStopInteract(AActor* pInstigator)
 {
